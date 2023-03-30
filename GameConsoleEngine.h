@@ -493,7 +493,7 @@ public:
 				}
 				else
 				{
-					y = (dx < 0 && dy < 0) || (dx > 0 && dy > 0) ? y + 1 : y = y - 1;
+					y = (dx < 0 && dy < 0) || (dx > 0 && dy > 0) ? y + 1 : y - 1;
 
 					px = px + 2 * (dy1 - dx1);
 				}
@@ -528,7 +528,7 @@ public:
 				}
 				else
 				{
-					x = (dx < 0 && dy>0) || (dx > 0 && dy > 0) ? x + 1 : x - 1;
+					x = (dx < 0 && dy < 0) || (dx > 0 && dy > 0) ? x + 1 : x - 1;
 
 					py = py + 2 * (dx1 - dy1);
 				}

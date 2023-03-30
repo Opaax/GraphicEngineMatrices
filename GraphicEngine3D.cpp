@@ -127,7 +127,7 @@ public:
         m_rotationZMatrice.matrice[3][3] = 1;
 
         m_rotationXMatrice.matrice[0][0] = 1;
-        m_rotationXMatrice.matrice[0][1] = std::cosf(m_rotationCube * 0.5f);
+        m_rotationXMatrice.matrice[1][1] = std::cosf(m_rotationCube * 0.5f);
         m_rotationXMatrice.matrice[1][2] = std::sinf(m_rotationCube * 0.5f);
         m_rotationXMatrice.matrice[2][1] = -std::sinf(m_rotationCube * 0.5f);
         m_rotationXMatrice.matrice[2][2] = std::cosf(m_rotationCube * 0.5f);;
