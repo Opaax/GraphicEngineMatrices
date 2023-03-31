@@ -29,5 +29,8 @@
     <ClInclude Include="GraphicEngine3DTypes.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectLoader.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

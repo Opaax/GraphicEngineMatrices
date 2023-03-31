@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="GameConsoleEngine.h" />
     <ClInclude Include="GraphicEngine3DTypes.h" />
+    <ClInclude Include="ObjectLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
