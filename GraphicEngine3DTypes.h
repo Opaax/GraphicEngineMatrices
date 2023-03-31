@@ -10,6 +10,9 @@ struct Vector3
 struct Triangle
 {
     Vector3 points[3];
+
+    wchar_t Symbol;
+    short Color;
 };
 
 struct Matrix4x4

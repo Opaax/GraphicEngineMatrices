@@ -19,6 +19,7 @@ protected:
     Matrix4x4 m_rotationXMatrice;
 
     Vector3 m_fakeCameraLocation;
+    Vector3 m_fakeLight;
 
 public:
     Engine3D()
@@ -72,6 +73,8 @@ public:
         m_projectionMatrice.matrice[3][2] = (-lFar * lNear) / (lFar - lNear);
         m_projectionMatrice.matrice[2][3] = 1.0f;
         m_projectionMatrice.matrice[3][3] = 0.0f;
+
+        m_fakeLight = {0.0f,0.0f,-1.0f};
 
         return true;
     }
@@ -134,6 +137,13 @@ public:
 
             if(lDot > 0.0f)
             {
+                float lDotLight = StaticMath::DotProduct(lNormal, m_fakeLight);
+
+                CHAR_INFO lColor = GetGreyScaleColor(lDotLight);
+
+                lTranslatedTriangle.Color = lColor.Attributes;
+                lTranslatedTriangle.Symbol = lColor.Char.UnicodeChar;
+
                 //Project triangles 3D to 2D
                 m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[0], lProjectTriangle.points[0]);
                 m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[1], lProjectTriangle.points[1]);
@@ -154,14 +164,18 @@ public:
                 lProjectTriangle.points[2].x *= 0.5f * (float)GetScreenWidth();
                 lProjectTriangle.points[2].y *= 0.5f * (float)GetScreenHeight();
 
+                FillTriangle(lProjectTriangle.points[0].x, lProjectTriangle.points[0].y,
+                    lProjectTriangle.points[1].x, lProjectTriangle.points[1].y,
+                    lProjectTriangle.points[2].x, lProjectTriangle.points[2].y,
+                    lTranslatedTriangle.Symbol, lTranslatedTriangle.Color);
 
-                DrawTriangle
+                /*DrawTriangle
                 (
                     lProjectTriangle.points[0].x, lProjectTriangle.points[0].y,
                     lProjectTriangle.points[1].x, lProjectTriangle.points[1].y,
                     lProjectTriangle.points[2].x, lProjectTriangle.points[2].y,
                     PIXEL_SOLID, FG_WHITE
-                );
+                );*/
             }
         }
 
