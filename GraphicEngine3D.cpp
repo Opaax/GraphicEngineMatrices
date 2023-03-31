@@ -18,6 +18,8 @@ protected:
     Matrix4x4 m_rotationZMatrice;
     Matrix4x4 m_rotationXMatrice;
 
+    Vector3 m_fakeCameraLocation;
+
 public:
     Engine3D()
     {
@@ -102,46 +104,65 @@ public:
             Triangle lRotateZTriangle;
             Triangle lRotateXZTriangle;
 
+            //Rot Z
             m_rotationZMatrice.MultiplyMatrixVector(tri.points[0], lRotateZTriangle.points[0]);
             m_rotationZMatrice.MultiplyMatrixVector(tri.points[1], lRotateZTriangle.points[1]);
             m_rotationZMatrice.MultiplyMatrixVector(tri.points[2], lRotateZTriangle.points[2]);
 
+            //Rot X
             m_rotationXMatrice.MultiplyMatrixVector(lRotateZTriangle.points[0], lRotateXZTriangle.points[0]);
             m_rotationXMatrice.MultiplyMatrixVector(lRotateZTriangle.points[1], lRotateXZTriangle.points[1]);
             m_rotationXMatrice.MultiplyMatrixVector(lRotateZTriangle.points[2], lRotateXZTriangle.points[2]);
 
+            //OffSet Screen
             lTranslatedTriangle = lRotateXZTriangle;
             lTranslatedTriangle.points[0].z = lRotateXZTriangle.points[0].z + 3.0f;
             lTranslatedTriangle.points[1].z = lRotateXZTriangle.points[1].z + 3.0f;
             lTranslatedTriangle.points[2].z = lRotateXZTriangle.points[2].z + 3.0f;
 
-            m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[0], lProjectTriangle.points[0]);
-            m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[1], lProjectTriangle.points[1]);
-            m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[2], lProjectTriangle.points[2]);
-            
-            //Scale into view
-            lProjectTriangle.points[0].x += 1;
-            lProjectTriangle.points[0].y += 1;
-            lProjectTriangle.points[1].x += 1;
-            lProjectTriangle.points[1].y += 1;
-            lProjectTriangle.points[2].x += 1;
-            lProjectTriangle.points[2].y += 1;
+            //Get triangle edges
+            Vector3 lEdge1 = StaticMath::VectorDirection(lTranslatedTriangle.points[1], lTranslatedTriangle.points[0]);
+            Vector3 lEdge2 = StaticMath::VectorDirection(lTranslatedTriangle.points[2], lTranslatedTriangle.points[0]);
 
-            lProjectTriangle.points[0].x *= 0.5f * (float)GetScreenWidth();
-            lProjectTriangle.points[0].y *= 0.5f * (float)GetScreenHeight();
-            lProjectTriangle.points[1].x *= 0.5f * (float)GetScreenWidth();
-            lProjectTriangle.points[1].y *= 0.5f * (float)GetScreenHeight();
-            lProjectTriangle.points[2].x *= 0.5f * (float)GetScreenWidth();
-            lProjectTriangle.points[2].y *= 0.5f * (float)GetScreenHeight();
+            //Get triangle normal
+            Vector3 lNormal = StaticMath::VectorNormalized((StaticMath::CrossProduct(lEdge1, lEdge2)));
+
+            //Get Vector to from triangle to camera
+            Vector3 lToCamera = StaticMath::VectorNormalized(StaticMath::VectorDirection(lTranslatedTriangle.points[0],m_fakeCameraLocation,true));
+
+            float lDot = StaticMath::DotProduct(lNormal, lToCamera);
+
+            if(lDot > 0.0f)
+            {
+                //Project triangles 3D to 2D
+                m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[0], lProjectTriangle.points[0]);
+                m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[1], lProjectTriangle.points[1]);
+                m_projectionMatrice.MultiplyMatrixVector(lTranslatedTriangle.points[2], lProjectTriangle.points[2]);
+
+                //Scale into view
+                lProjectTriangle.points[0].x += 1;
+                lProjectTriangle.points[0].y += 1;
+                lProjectTriangle.points[1].x += 1;
+                lProjectTriangle.points[1].y += 1;
+                lProjectTriangle.points[2].x += 1;
+                lProjectTriangle.points[2].y += 1;
+
+                lProjectTriangle.points[0].x *= 0.5f * (float)GetScreenWidth();
+                lProjectTriangle.points[0].y *= 0.5f * (float)GetScreenHeight();
+                lProjectTriangle.points[1].x *= 0.5f * (float)GetScreenWidth();
+                lProjectTriangle.points[1].y *= 0.5f * (float)GetScreenHeight();
+                lProjectTriangle.points[2].x *= 0.5f * (float)GetScreenWidth();
+                lProjectTriangle.points[2].y *= 0.5f * (float)GetScreenHeight();
 
 
-            DrawTriangle
-            (
-                lProjectTriangle.points[0].x, lProjectTriangle.points[0].y,
-                lProjectTriangle.points[1].x, lProjectTriangle.points[1].y,
-                lProjectTriangle.points[2].x, lProjectTriangle.points[2].y,
-                PIXEL_SOLID, FG_WHITE
-            );
+                DrawTriangle
+                (
+                    lProjectTriangle.points[0].x, lProjectTriangle.points[0].y,
+                    lProjectTriangle.points[1].x, lProjectTriangle.points[1].y,
+                    lProjectTriangle.points[2].x, lProjectTriangle.points[2].y,
+                    PIXEL_SOLID, FG_WHITE
+                );
+            }
         }
 
         return true;

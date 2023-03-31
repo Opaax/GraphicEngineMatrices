@@ -18,10 +18,16 @@
     <ClCompile Include="GraphicEngine3D.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicEngine3DTypes.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameConsoleEngine.h">
       <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicEngine3DTypes.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
