@@ -14,13 +14,12 @@ public:
 
     static Vector3 ScaleVector(const Vector3& InVector, float Scale)
     {
-        Vector3 lScaleVector;
+        return { InVector.x * Scale, InVector.y * Scale, InVector.z * Scale };
+    }
 
-        lScaleVector.x = InVector.x * Scale;
-        lScaleVector.y = InVector.y * Scale;
-        lScaleVector.z = InVector.z * Scale;
-
-        return lScaleVector;
+    static Vector3 DivideVector(const Vector3& InVector, float Scale)
+    {
+        return { InVector.x / Scale, InVector.y / Scale, InVector.z / Scale };
     }
     
     static Vector3 CrossProduct(const Vector3& VecA, const Vector3& VecB)

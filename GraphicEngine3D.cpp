@@ -65,19 +65,7 @@ public:
         }
 
         //Projection Matrix
-        float lNear = 0.1f;
-        float lFar = 1000.0f;
-        float lFov = 90.f;
-        float lAspectRatio = GetScreenAspectRatio();
-        float lPI = 3.14159f;
-        float lFovRad = 1.0f / std::tanf(lFov * 0.5f / 180.f * lPI);
-
-        m_projectionMatrice.matrice[0][0] = lAspectRatio * lFovRad;
-        m_projectionMatrice.matrice[1][1] = lFovRad;
-        m_projectionMatrice.matrice[2][2] = lFar / (lFar - lNear);
-        m_projectionMatrice.matrice[3][2] = (-lFar * lNear) / (lFar - lNear);
-        m_projectionMatrice.matrice[2][3] = 1.0f;
-        m_projectionMatrice.matrice[3][3] = 0.0f;
+        m_projectionMatrice = Matrix4x4::MakeProjectionMatrice(90.0f, GetScreenAspectRatio(), 0.1f, 1000.f, false);
 
         m_fakeLight = {0.0f,0.0f,-1.0f};
 
